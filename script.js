@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configuration
     const CONFIG = {
         pricePerKm: 25,
+        pickupFeePerKm: 16, // Fee per km for non-Ostrava Centrum pickups
         minPrivateDriverPrice: 800,
         nightSurchargePercent: 0.30,
         nightStartHour: 22,
@@ -15,8 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
         waitingPricePerHour: 500,
         // TODO: Replace with actual WhatsApp number before production deployment
         whatsappNumber: '4200000000000',
-        // TODO: Replace with actual API endpoint before production deployment
-        apiEndpoint: '/api/bookings'
+        // API endpoint - update this for production deployment
+        apiEndpoint: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000/api/reservations'
+            : '/api/reservations'
     };
 
     // Service base prices (in CZK)
@@ -326,39 +329,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Submit booking
     function submitBooking(formData) {
-        // Prepare booking data
+        const serviceType = formData.get('serviceType');
+        const pricing = calculatePrice();
+        
+        // Prepare booking data matching the API data model
         const bookingData = {
-            service: formData.get('serviceType'),
-            serviceName: SERVICE_NAMES[formData.get('serviceType')],
-            bookingName: generateBookingName(
-                formData.get('pickupLocation'),
-                formData.get('dropoffLocation')
-            ),
-            pickupLocation: formData.get('pickupLocation'),
-            dropoffLocation: formData.get('dropoffLocation'),
-            pickupDate: formData.get('pickupDate'),
-            pickupTime: formData.get('pickupTime'),
-            passengers: formData.get('passengers'),
-            customerName: formData.get('customerName'),
-            customerEmail: formData.get('customerEmail'),
-            customerPhone: formData.get('customerPhone'),
-            pricing: calculatePrice(),
-            timestamp: new Date().toISOString()
+            type: serviceType,
+            date: formData.get('pickupDate'),
+            time: formData.get('pickupTime'),
+            pickup_address: formData.get('pickupLocation'),
+            dropoff_airport: formData.get('dropoffLocation') || SERVICE_NAMES[serviceType],
+            passengers_count: parseInt(formData.get('passengers'), 10),
+            flight_number: formData.get('flightNumber') || null,
+            luggage_count: parseInt(formData.get('numberOfBags'), 10) || 0,
+            email: formData.get('customerEmail'),
+            price: pricing.totalPrice,
+            estimated_km: currentServiceType === 'private' ? parseInt(formData.get('estimatedKm'), 10) : null
         };
 
-        // Add service-specific fields
-        if (currentServiceType === 'airport') {
-            bookingData.flightNumber = formData.get('flightNumber');
-            bookingData.numberOfBags = formData.get('numberOfBags');
-            bookingData.meetAndGreet = formData.get('meetAndGreet') === 'on';
-        } else {
-            bookingData.estimatedKm = formData.get('estimatedKm');
-            bookingData.numberOfStops = formData.get('numberOfStops');
-            bookingData.roundTrip = formData.get('roundTrip') === 'on';
-            bookingData.vipOption = formData.get('vipOption') === 'on';
-        }
+        // Store additional display data for success modal
+        const displayData = {
+            serviceName: SERVICE_NAMES[serviceType],
+            customerName: formData.get('customerName'),
+            customerPhone: formData.get('customerPhone'),
+            pickupLocation: formData.get('pickupLocation'),
+            dropoffLocation: formData.get('dropoffLocation') || SERVICE_NAMES[serviceType],
+            pickupDate: formData.get('pickupDate'),
+            pickupTime: formData.get('pickupTime'),
+            pricing: pricing
+        };
 
-        // Send to API (placeholder)
+        // Disable submit button and show loading state
+        var submitBtn = bookingForm.querySelector('.btn-submit');
+        var originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="btn-text">Odesílám...</span>';
+
+        // Send to API
         fetch(CONFIG.apiEndpoint, {
             method: 'POST',
             headers: {
@@ -367,30 +374,36 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(bookingData)
         })
         .then(function(response) {
-            if (!response.ok) {
-                // API returned an error status, but for demo we still proceed
-                console.warn('API returned status:', response.status);
-            }
-            return response.json().catch(function() {
-                // If JSON parsing fails, return default success for demo
-                return { success: true };
+            return response.json().then(function(data) {
+                if (!response.ok) {
+                    // API returned an error
+                    var errorMessage = data.error || 'Při vytváření rezervace došlo k chybě.';
+                    if (data.details && Array.isArray(data.details)) {
+                        errorMessage = data.details.join(', ');
+                    }
+                    throw new Error(errorMessage);
+                }
+                return data;
             });
         })
         .then(function(apiResult) {
-            // Merge API result with booking data
-            return { success: apiResult.success !== false, data: bookingData };
+            if (apiResult.success) {
+                // Store booking data for confirmation
+                window.lastBooking = Object.assign({}, displayData, { id: apiResult.data.id });
+                // Show success modal
+                showSuccessModal(displayData);
+            } else {
+                throw new Error(apiResult.error || 'Rezervace se nezdařila');
+            }
         })
         .catch(function(error) {
-            // Network error or API unavailable - for demo purposes, show success
-            console.warn('Booking API unavailable (demo mode):', error.message);
-            return { success: true, data: bookingData };
+            console.error('Booking error:', error);
+            showError(error.message || 'Při vytváření rezervace došlo k chybě. Zkuste to prosím znovu.');
         })
-        .then(function(result) {
-            // Store booking data for confirmation
-            window.lastBooking = result.data;
-
-            // Show success modal
-            showSuccessModal(result.data);
+        .finally(function() {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
         });
     }
 
