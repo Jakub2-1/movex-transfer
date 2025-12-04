@@ -39,6 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
         'private-driver': 'Privátní Řidič'
     };
 
+    // Service routes for airport transfers
+    const SERVICE_ROUTES = {
+        'katowice': 'Ostrava → Letiště Katowice',
+        'krakow': 'Ostrava → Letiště Krakov',
+        'vienna': 'Ostrava → Letiště Vídeň',
+        'prague': 'Ostrava → Letiště Praha',
+        'brno': 'Ostrava → Brno'
+    };
+
     // Simulated booked slots (in production, this would come from backend)
     const bookedSlots = [
         // Example: { date: '2024-12-25', time: '10:00', duration: 180 }
@@ -80,14 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('serviceType').value = service;
         document.getElementById('basePrice').value = SERVICE_PRICES[service];
 
-        // Show/hide conditional fields
-        if (serviceType === 'airport') {
-            airportFields.style.display = 'flex';
-            privateDriverFields.style.display = 'none';
-        } else {
-            airportFields.style.display = 'none';
-            privateDriverFields.style.display = 'flex';
-        }
+        // Get DOM elements for conditional display
+        const modalRoute = document.getElementById('modalRoute');
+        const dropoffLocationGroup = document.getElementById('dropoffLocationGroup');
+        const dropoffLocationInput = document.getElementById('dropoffLocation');
+
+        // Reset form first
+        bookingForm.reset();
 
         // Set default date to tomorrow
         const tomorrow = new Date();
@@ -95,11 +103,38 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('pickupDate').value = tomorrow.toISOString().split('T')[0];
         document.getElementById('pickupDate').min = tomorrow.toISOString().split('T')[0];
 
-        // Reset form
-        bookingForm.reset();
+        // Restore hidden field values after reset
         document.getElementById('serviceType').value = service;
         document.getElementById('basePrice').value = SERVICE_PRICES[service];
-        document.getElementById('pickupDate').value = tomorrow.toISOString().split('T')[0];
+
+        // Show/hide conditional fields based on service type
+        if (serviceType === 'airport') {
+            // For airport transfers: show route, hide destination field
+            airportFields.style.display = 'flex';
+            privateDriverFields.style.display = 'none';
+            
+            // Show the route in modal header
+            modalRoute.textContent = SERVICE_ROUTES[service];
+            modalRoute.style.display = 'block';
+            
+            // Hide destination field - it's fixed for airport services
+            dropoffLocationGroup.style.display = 'none';
+            dropoffLocationInput.removeAttribute('required');
+            dropoffLocationInput.value = SERVICE_NAMES[service];
+        } else {
+            // For private driver: hide route, show destination field
+            airportFields.style.display = 'none';
+            privateDriverFields.style.display = 'flex';
+            
+            // Hide the route in modal header
+            modalRoute.style.display = 'none';
+            
+            // Show destination field - needed for private driver
+            dropoffLocationGroup.style.display = 'flex';
+            dropoffLocationInput.setAttribute('required', 'required');
+            dropoffLocationInput.value = '';
+        }
+        
         hideError();
         updatePriceDisplay();
 

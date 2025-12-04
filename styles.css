@@ -623,6 +623,17 @@ footer p {
     font-weight: 700;
 }
 
+.modal-route {
+    color: #25d366;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    background: rgba(37, 211, 102, 0.1);
+    border-radius: 8px;
+    display: inline-block;
+}
+
 .modal-subtitle {
     color: #999;
     font-size: 0.95rem;
