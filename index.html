@@ -127,6 +127,7 @@
             <button class="modal-close" id="modalClose" aria-label="Zavřít">&times;</button>
             <div class="modal-header">
                 <h2 id="modalTitle">Rezervace</h2>
+                <p class="modal-route" id="modalRoute" style="display: none;"></p>
                 <p class="modal-subtitle" id="modalSubtitle">Vyplňte prosím údaje o vaší cestě</p>
             </div>
             <form id="bookingForm" class="modal-form">
@@ -139,9 +140,9 @@
                     <input type="text" id="pickupLocation" name="pickupLocation" required placeholder="Zadejte adresu vyzvednutí">
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group" id="dropoffLocationGroup">
                     <label for="dropoffLocation">Cílová destinace *</label>
-                    <input type="text" id="dropoffLocation" name="dropoffLocation" required placeholder="Zadejte cílovou adresu">
+                    <input type="text" id="dropoffLocation" name="dropoffLocation" placeholder="Zadejte cílovou adresu">
                 </div>
                 
                 <div class="form-row">
