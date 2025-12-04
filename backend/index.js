@@ -2,11 +2,38 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const pool = require('./db');
 const { sendCustomerConfirmation, sendOwnerNotification } = require('./emailService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiting configuration
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: {
+        success: false,
+        error: 'Příliš mnoho požadavků, zkuste to prosím později.',
+        code: 'RATE_LIMIT'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+// Stricter rate limit for reservation creation
+const reservationLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 10, // Limit each IP to 10 reservation requests per hour
+    message: {
+        success: false,
+        error: 'Příliš mnoho rezervací. Zkuste to prosím později.',
+        code: 'RATE_LIMIT'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
 
 // Travel times in minutes for each destination (approximate)
 const TRAVEL_TIMES = {
@@ -25,20 +52,26 @@ const allowedOrigins = process.env.FRONTEND_URL
 
 app.use(cors({
     origin: function(origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
+        // Allow requests with no origin (like mobile apps or curl requests in development)
+        if (!origin) {
+            return callback(null, true);
+        }
         
+        // Check if origin is in allowed list or wildcard is configured
         if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
             callback(null, true);
         } else {
             console.warn('CORS blocked origin:', origin);
-            callback(null, true); // Allow all in production for flexibility
+            callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true
 }));
 
 app.use(express.json());
+
+// Apply general rate limiting to all API routes
+app.use('/api/', apiLimiter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -140,7 +173,7 @@ function validateReservation(data) {
 /**
  * POST /api/reservations - Create a new reservation
  */
-app.post('/api/reservations', async (req, res) => {
+app.post('/api/reservations', reservationLimiter, async (req, res) => {
     try {
         const {
             type,

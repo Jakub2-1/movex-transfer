@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             luggage_count: parseInt(formData.get('numberOfBags'), 10) || 0,
             email: formData.get('customerEmail'),
             price: pricing.totalPrice,
-            estimated_km: currentServiceType === 'private' ? parseInt(formData.get('estimatedKm'), 10) : null
+            estimated_km: serviceType === 'private-driver' ? parseInt(formData.get('estimatedKm'), 10) : null
         };
 
         // Store additional display data for success modal

@@ -2,6 +2,11 @@ const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Email sender configuration - can be customized via environment variables
+const FROM_EMAIL = process.env.FROM_EMAIL || 'rezervace@movextransfer.cz';
+const FROM_NAME = process.env.FROM_NAME || 'Movex Transfer';
+const SYSTEM_EMAIL = process.env.SYSTEM_EMAIL || 'system@movextransfer.cz';
+
 /**
  * Send confirmation email to customer in Czech
  */
@@ -98,7 +103,7 @@ async function sendCustomerConfirmation(reservation) {
 
     try {
         const result = await resend.emails.send({
-            from: 'Movex Transfer <rezervace@movextransfer.cz>',
+            from: `${FROM_NAME} <${FROM_EMAIL}>`,
             to: [email],
             subject: `Potvrzení rezervace - ${dropoff_airport} - ${formattedDate}`,
             html
@@ -200,7 +205,7 @@ async function sendOwnerNotification(reservation) {
 
     try {
         const result = await resend.emails.send({
-            from: 'Movex Transfer <system@movextransfer.cz>',
+            from: `${FROM_NAME} <${SYSTEM_EMAIL}>`,
             to: [process.env.OWNER_EMAIL],
             subject: `🚗 Nová rezervace: ${dropoff_airport} - ${formattedDate} v ${time}`,
             html
