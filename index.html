@@ -44,35 +44,47 @@
             <h2>Naše Ceny Letištních Transferů</h2>
             <p class="pricing-subtitle">Transparentní ceny bez skrytých poplatků. Ceny platí za celý vůz v jednom směru.</p>
             <div class="pricing-cards">
-                <div class="pricing-card">
+                <div class="pricing-card" data-service="katowice" data-base-price="1800" data-type="airport">
                     <div class="card-icon">✈️</div>
                     <h3>Letiště Katowice</h3>
                     <p class="route">Ostrava → Letiště Katowice</p>
                     <p class="price">1800 Kč</p>
+                    <button class="btn btn-book" data-service="katowice">Rezervovat</button>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card" data-service="krakow" data-base-price="2400" data-type="airport">
                     <div class="card-icon">🛫</div>
                     <h3>Letiště Krakov</h3>
                     <p class="route">Ostrava → Letiště Krakov</p>
                     <p class="price">2400 Kč</p>
+                    <button class="btn btn-book" data-service="krakow">Rezervovat</button>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card" data-service="vienna" data-base-price="5500" data-type="airport">
                     <div class="card-icon">🌍</div>
                     <h3>Letiště Vídeň</h3>
                     <p class="route">Ostrava → Letiště Vídeň</p>
                     <p class="price">5500 Kč</p>
+                    <button class="btn btn-book" data-service="vienna">Rezervovat</button>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card" data-service="prague" data-base-price="5000" data-type="airport">
                     <div class="card-icon">🏛️</div>
                     <h3>Letiště Praha</h3>
                     <p class="route">Ostrava → Letiště Praha</p>
                     <p class="price">5000 Kč</p>
+                    <button class="btn btn-book" data-service="prague">Rezervovat</button>
                 </div>
-                <div class="pricing-card">
+                <div class="pricing-card" data-service="brno" data-base-price="3000" data-type="airport">
                     <div class="card-icon">🚗</div>
                     <h3>Brno</h3>
                     <p class="route">Ostrava → Brno</p>
                     <p class="price">3000 Kč</p>
+                    <button class="btn btn-book" data-service="brno">Rezervovat</button>
+                </div>
+                <div class="pricing-card" data-service="private-driver" data-base-price="800" data-type="private">
+                    <div class="card-icon">🕴️</div>
+                    <h3>Privátní Řidič</h3>
+                    <p class="route">Osobní řidič na objednávku</p>
+                    <p class="price">od 800 Kč</p>
+                    <button class="btn btn-book" data-service="private-driver">Rezervovat</button>
                 </div>
             </div>
         </div>
@@ -108,6 +120,176 @@
             <p class="driver-note">Ceny osobního řidiče se stanovují individuálně dle trasy a doby trvání. Kontaktujte nás pro nezávaznou cenovou nabídku.</p>
         </div>
     </section>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose" aria-label="Zavřít">&times;</button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Rezervace</h2>
+                <p class="modal-subtitle" id="modalSubtitle">Vyplňte prosím údaje o vaší cestě</p>
+            </div>
+            <form id="bookingForm" class="modal-form">
+                <input type="hidden" id="serviceType" name="serviceType">
+                <input type="hidden" id="basePrice" name="basePrice">
+                
+                <!-- Common Fields -->
+                <div class="form-group">
+                    <label for="pickupLocation">Místo vyzvednutí *</label>
+                    <input type="text" id="pickupLocation" name="pickupLocation" required placeholder="Zadejte adresu vyzvednutí">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dropoffLocation">Cílová destinace *</label>
+                    <input type="text" id="dropoffLocation" name="dropoffLocation" required placeholder="Zadejte cílovou adresu">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pickupDate">Datum *</label>
+                        <input type="date" id="pickupDate" name="pickupDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickupTime">Čas *</label>
+                        <input type="time" id="pickupTime" name="pickupTime" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="passengers">Počet cestujících * (max. 3)</label>
+                    <select id="passengers" name="passengers" required>
+                        <option value="1">1 cestující</option>
+                        <option value="2">2 cestující</option>
+                        <option value="3">3 cestující</option>
+                    </select>
+                </div>
+                
+                <!-- Airport-specific Fields -->
+                <div id="airportFields" class="conditional-fields">
+                    <div class="form-group">
+                        <label for="flightNumber">Číslo letu</label>
+                        <input type="text" id="flightNumber" name="flightNumber" placeholder="např. OK123">
+                    </div>
+                    <div class="form-group">
+                        <label for="numberOfBags">Počet zavazadel</label>
+                        <select id="numberOfBags" name="numberOfBags">
+                            <option value="0">0 zavazadel</option>
+                            <option value="1">1 zavazadlo</option>
+                            <option value="2">2 zavazadla</option>
+                            <option value="3">3 zavazadla</option>
+                            <option value="4">4+ zavazadel</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="meetAndGreet" name="meetAndGreet">
+                            <span class="checkbox-custom"></span>
+                            Meet &amp; Greet (vyzvednutí s cedulkou)
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Private Driver Fields -->
+                <div id="privateDriverFields" class="conditional-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="estimatedKm">Odhadovaná vzdálenost (km) *</label>
+                        <input type="number" id="estimatedKm" name="estimatedKm" min="1" placeholder="Zadejte vzdálenost v km">
+                    </div>
+                    <div class="form-group">
+                        <label for="numberOfStops">Počet zastávek</label>
+                        <select id="numberOfStops" name="numberOfStops">
+                            <option value="0">Bez zastávek</option>
+                            <option value="1">1 zastávka</option>
+                            <option value="2">2 zastávky</option>
+                            <option value="3">3 zastávky</option>
+                            <option value="4">4+ zastávek</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="roundTrip" name="roundTrip">
+                            <span class="checkbox-custom"></span>
+                            Zpáteční cesta
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="vipOption" name="vipOption">
+                            <span class="checkbox-custom"></span>
+                            VIP služba (prémiové vozidlo)
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="form-group">
+                    <label for="customerName">Jméno a příjmení *</label>
+                    <input type="text" id="customerName" name="customerName" required placeholder="Vaše jméno">
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerEmail">E-mail *</label>
+                    <input type="email" id="customerEmail" name="customerEmail" required placeholder="vas@email.cz">
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerPhone">Telefon *</label>
+                    <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+420 123 456 789">
+                </div>
+                
+                <!-- Price Display -->
+                <div class="price-summary">
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Základní cena:</span>
+                            <span id="basePriceDisplay">0 Kč</span>
+                        </div>
+                        <div class="price-row" id="extraKmRow" style="display: none;">
+                            <span>Příplatek za vzdálenost:</span>
+                            <span id="extraKmPrice">0 Kč</span>
+                        </div>
+                        <div class="price-row" id="nightSurchargeRow" style="display: none;">
+                            <span>Noční příplatek (+30%):</span>
+                            <span id="nightSurchargePrice">0 Kč</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Celková cena:</span>
+                            <span id="totalPrice">0 Kč</span>
+                        </div>
+                        <div class="price-row deposit">
+                            <span>Záloha (50%):</span>
+                            <span id="depositPrice">0 Kč</span>
+                        </div>
+                    </div>
+                    <p class="price-note">Zbytek částky bude účtován po dokončení jízdy.</p>
+                </div>
+                
+                <!-- Error Display -->
+                <div class="form-error" id="formError" style="display: none;"></div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-submit">
+                    <span class="btn-text">Potvrdit rezervaci</span>
+                    <span class="btn-gloss"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal" style="display: none;">
+        <div class="modal-container success-modal">
+            <div class="success-icon">✓</div>
+            <h2>Rezervace úspěšná!</h2>
+            <p>Vaše rezervace byla přijata. Potvrzení bylo odesláno na váš e-mail.</p>
+            <div class="success-actions">
+                <a href="#" class="btn btn-whatsapp" id="whatsappConfirm">
+                    <span class="btn-text">Kontaktovat přes WhatsApp</span>
+                </a>
+                <button class="btn btn-close-success" id="closeSuccess">Zavřít</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
