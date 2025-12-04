@@ -254,6 +254,84 @@ footer p {
     font-weight: 300;
 }
 
+/* Personal Driver Section */
+.personal-driver {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+}
+
+.driver-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.personal-driver h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 16px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.driver-subtitle {
+    font-size: 1.1rem;
+    color: #cccccc;
+    margin-bottom: 60px;
+    font-weight: 300;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.driver-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+}
+
+.driver-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.driver-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(37, 211, 102, 0.15);
+    border-color: #25d366;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.driver-card h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.driver-card .description {
+    font-size: 0.95rem;
+    color: #cccccc;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.driver-note {
+    font-size: 1rem;
+    color: #25d366;
+    font-weight: 400;
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
 /* Floating WhatsApp Button for Mobile */
 .whatsapp-float {
     display: none;
@@ -284,6 +362,10 @@ footer p {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .driver-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .hero h1 {
         font-size: 3.5rem;
     }
@@ -296,6 +378,10 @@ footer p {
 @media (min-width: 1024px) {
     .pricing-cards {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .driver-cards {
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .hero h1 {
@@ -369,6 +455,32 @@ footer p {
         font-size: 2rem;
     }
 
+    .personal-driver {
+        padding: 60px 20px 80px;
+    }
+
+    .personal-driver h2 {
+        font-size: 1.75rem;
+        margin-bottom: 12px;
+    }
+
+    .driver-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 40px;
+    }
+
+    .driver-card {
+        padding: 32px 24px;
+    }
+
+    .driver-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .driver-note {
+        font-size: 0.9rem;
+    }
+
     .top-bar {
         font-size: 0.85rem;
         padding: 8px 16px;
@@ -400,6 +512,10 @@ footer p {
 
     .pricing-card .price {
         font-size: 1.75rem;
+    }
+
+    .driver-card {
+        padding: 28px 20px;
     }
 
     .top-bar {
