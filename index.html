@@ -6,58 +6,84 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Movex Transfer - Airport Transfers from Ostrava</title>
+    <title>Movex Transfer - Luxusní letištní přeprava z Ostravy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Airport Transfers from Ostrava</h1>
-            <p>Reliable and comfortable transportation to major airports</p>
+            <h1>Luxusní Letištní Transfery</h1>
+            <p>Prémiová přeprava z Ostravy na hlavní letiště v eleganci a pohodlí</p>
             <div class="hero-buttons">
-                <button id="book-now-btn" class="btn btn-primary">Book Now</button>
-                <button id="whatsapp-btn" class="btn btn-secondary">WhatsApp Contact</button>
+                <button id="book-now-btn" class="btn btn-primary">
+                    <span class="btn-text">Rezervovat nyní</span>
+                    <span class="btn-gloss"></span>
+                </button>
+                <button id="whatsapp-btn" class="btn btn-secondary">
+                    <span class="btn-text">Kontakt WhatsApp</span>
+                    <span class="btn-gloss"></span>
+                </button>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
     <section class="pricing">
-        <h2>Our Transfer Prices</h2>
-        <div class="pricing-cards">
-            <div class="pricing-card">
-                <h3>Katowice Airport</h3>
-                <p class="route">Ostrava → Katowice Airport</p>
-                <p class="price">1800 Kč</p>
-            </div>
-            <div class="pricing-card">
-                <h3>Krakow Airport</h3>
-                <p class="route">Ostrava → Krakow Airport</p>
-                <p class="price">2400 Kč</p>
-            </div>
-            <div class="pricing-card">
-                <h3>Vídeň Airport</h3>
-                <p class="route">Ostrava → Vídeň Airport</p>
-                <p class="price">5500 Kč</p>
-            </div>
-            <div class="pricing-card">
-                <h3>Praha Airport</h3>
-                <p class="route">Ostrava → Praha Airport</p>
-                <p class="price">5000 Kč</p>
-            </div>
-            <div class="pricing-card">
-                <h3>Brno</h3>
-                <p class="route">Ostrava → Brno</p>
-                <p class="price">3000 Kč</p>
+        <div class="pricing-container">
+            <h2>Naše Ceny Transferů</h2>
+            <p class="pricing-subtitle">Transparentní ceny bez skrytých poplatků</p>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <div class="card-icon">✈️</div>
+                    <h3>Letiště Katowice</h3>
+                    <p class="route">Ostrava → Letiště Katowice</p>
+                    <p class="price">1800 Kč</p>
+                </div>
+                <div class="pricing-card">
+                    <div class="card-icon">🛫</div>
+                    <h3>Letiště Krakov</h3>
+                    <p class="route">Ostrava → Letiště Krakov</p>
+                    <p class="price">2400 Kč</p>
+                </div>
+                <div class="pricing-card">
+                    <div class="card-icon">🌍</div>
+                    <h3>Letiště Vídeň</h3>
+                    <p class="route">Ostrava → Letiště Vídeň</p>
+                    <p class="price">5500 Kč</p>
+                </div>
+                <div class="pricing-card">
+                    <div class="card-icon">🏛️</div>
+                    <h3>Letiště Praha</h3>
+                    <p class="route">Ostrava → Letiště Praha</p>
+                    <p class="price">5000 Kč</p>
+                </div>
+                <div class="pricing-card">
+                    <div class="card-icon">🚗</div>
+                    <h3>Brno</h3>
+                    <p class="route">Ostrava → Brno</p>
+                    <p class="price">3000 Kč</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Movex Transfer. All rights reserved.</p>
+        <p>&copy; 2024 Movex Transfer. Všechna práva vyhrazena.</p>
     </footer>
+
+    <!-- Sticky WhatsApp CTA Bar for Mobile -->
+    <div class="whatsapp-sticky-bar">
+        <a href="#" id="whatsapp-sticky-btn" class="whatsapp-sticky-link">
+            <span class="whatsapp-icon">💬</span>
+            <span class="whatsapp-text">Rezervovat přes WhatsApp</span>
+        </a>
+    </div>
 
     <script src="script.js"></script>
 </body>

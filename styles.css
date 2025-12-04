@@ -5,209 +5,384 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #fff;
+    color: #f5f5f5;
+    background-color: #0a0a0a;
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-    padding: 80px 20px;
+    position: relative;
+    background-image: url('hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 120px 20px;
     text-align: center;
-    min-height: 60vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(30, 30, 30, 0.75) 100%);
+    z-index: 1;
+}
+
 .hero-content {
-    max-width: 800px;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hero h1 {
-    font-size: 2.5rem;
-    color: #1a1a1a;
-    margin-bottom: 16px;
+    font-size: 3.5rem;
+    color: #ffffff;
+    margin-bottom: 24px;
     font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .hero p {
-    font-size: 1.25rem;
-    color: #666;
-    margin-bottom: 32px;
+    font-size: 1.35rem;
+    color: #c0c0c0;
+    margin-bottom: 48px;
+    font-weight: 300;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-buttons {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-/* Button Styles */
+/* Button Styles with Glossy Effect */
 .btn {
-    padding: 14px 32px;
-    font-size: 1rem;
+    position: relative;
+    padding: 18px 42px;
+    font-size: 1.1rem;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-gloss {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    z-index: 1;
+    transition: left 0.6s ease;
+}
+
+.btn:hover .btn-gloss {
+    left: 100%;
 }
 
 .btn-primary {
-    background-color: #22c55e;
-    color: #fff;
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #d4af37 100%);
+    background-size: 200% 200%;
+    color: #0a0a0a;
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #16a34a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    background-position: 100% 100%;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(212, 175, 55, 0.5);
 }
 
 .btn-secondary {
-    background-color: #25d366;
-    color: #fff;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 50%, #25d366 100%);
+    background-size: 200% 200%;
+    color: #ffffff;
+    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.3);
 }
 
 .btn-secondary:hover {
-    background-color: #128c7e;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    background-position: 100% 100%;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(37, 211, 102, 0.5);
 }
 
 /* Pricing Section */
 .pricing {
-    padding: 80px 20px;
-    background-color: #fff;
+    padding: 120px 20px;
+    background: linear-gradient(180deg, #0a0a0a 0%, #151515 100%);
+}
+
+.pricing-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .pricing h2 {
     text-align: center;
-    font-size: 2rem;
-    color: #1a1a1a;
-    margin-bottom: 48px;
+    font-size: 2.75rem;
+    color: #ffffff;
+    margin-bottom: 16px;
     font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.pricing-subtitle {
+    font-size: 1.15rem;
+    color: #888888;
+    margin-bottom: 72px;
+    font-weight: 300;
 }
 
 .pricing-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 32px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .pricing-card {
-    background-color: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 32px;
+    background: linear-gradient(145deg, #1a1a1a 0%, #252525 100%);
+    border: 1px solid #2a2a2a;
+    border-radius: 24px;
+    padding: 48px 40px;
     text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    border-color: #22c55e;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 24px 64px rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+    background: linear-gradient(145deg, #1f1f1f 0%, #2a2a2a 100%);
+}
+
+.card-icon {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .pricing-card h3 {
-    font-size: 1.5rem;
-    color: #1a1a1a;
-    margin-bottom: 8px;
+    font-size: 1.75rem;
+    color: #ffffff;
+    margin-bottom: 12px;
     font-weight: 600;
 }
 
 .pricing-card .route {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 16px;
+    font-size: 1rem;
+    color: #888888;
+    margin-bottom: 24px;
+    font-weight: 400;
 }
 
 .pricing-card .price {
-    font-size: 2rem;
-    color: #22c55e;
+    font-size: 2.5rem;
+    color: #d4af37;
     font-weight: 700;
+    letter-spacing: -1px;
 }
 
 /* Footer */
 footer {
-    background-color: #1a1a1a;
-    color: #999;
+    background-color: #050505;
+    color: #666666;
     text-align: center;
-    padding: 24px 20px;
+    padding: 40px 20px;
+    border-top: 1px solid #1a1a1a;
 }
 
 footer p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 300;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero {
-        padding: 60px 20px;
-        min-height: auto;
+/* Sticky WhatsApp CTA Bar for Mobile */
+.whatsapp-sticky-bar {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    padding: 16px 20px;
+    z-index: 1000;
+    box-shadow: 0 -4px 24px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-sticky-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.whatsapp-icon {
+    font-size: 1.5rem;
+}
+
+.whatsapp-text {
+    letter-spacing: 0.3px;
+}
+
+/* Add padding to body to account for sticky bar on mobile */
+body {
+    padding-bottom: 70px;
+}
+
+/* Responsive Design - Mobile First */
+@media (min-width: 768px) {
+    .pricing-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .whatsapp-sticky-bar {
+        display: none;
+    }
+
+    body {
+        padding-bottom: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .pricing-cards {
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .hero h1 {
-        font-size: 1.75rem;
+        font-size: 4rem;
+    }
+
+    .hero p {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        padding: 80px 20px;
+        min-height: 100vh;
+    }
+
+    .hero h1 {
+        font-size: 2.25rem;
+        margin-bottom: 16px;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 320px;
+        padding: 16px 32px;
+    }
+
+    .pricing {
+        padding: 80px 20px 100px;
+    }
+
+    .pricing h2 {
+        font-size: 2rem;
+        margin-bottom: 12px;
+    }
+
+    .pricing-subtitle {
+        font-size: 1rem;
+        margin-bottom: 48px;
+    }
+
+    .pricing-card {
+        padding: 40px 32px;
+    }
+
+    .card-icon {
+        font-size: 3.5rem;
+    }
+
+    .pricing-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .pricing-card .price {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.85rem;
     }
 
     .hero p {
         font-size: 1rem;
     }
 
-    .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
     .btn {
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .pricing {
-        padding: 60px 20px;
-    }
-
-    .pricing h2 {
-        font-size: 1.5rem;
-        margin-bottom: 32px;
-    }
-
-    .pricing-cards {
-        grid-template-columns: 1fr;
+        padding: 14px 28px;
+        font-size: 1rem;
     }
 
     .pricing-card {
-        padding: 24px;
+        padding: 32px 24px;
     }
 
-    .pricing-card h3 {
-        font-size: 1.25rem;
+    .card-icon {
+        font-size: 3rem;
     }
 
     .pricing-card .price {
-        font-size: 1.75rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 1.5rem;
-    }
-
-    .btn {
-        padding: 12px 24px;
-        font-size: 0.95rem;
+        font-size: 2rem;
     }
 }
