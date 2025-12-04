@@ -13,8 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
         airportBufferMinutes: 90, // 1.5 hours buffer for airport trips
         freeWaitingMinutes: 30,
         waitingPricePerHour: 500,
-        whatsappNumber: '4200000000000', // Replace with actual number
-        apiEndpoint: '/api/bookings' // Placeholder API endpoint
+        // TODO: Replace with actual WhatsApp number before production deployment
+        whatsappNumber: '4200000000000',
+        // TODO: Replace with actual API endpoint before production deployment
+        apiEndpoint: '/api/bookings'
     };
 
     // Service base prices (in CZK)
@@ -224,10 +226,10 @@ document.addEventListener('DOMContentLoaded', function() {
             bookingEnd.setTime(bookingEnd.getTime() + CONFIG.airportBufferMinutes * 60000);
         }
 
-        for (var i = 0; i < bookedSlots.length; i++) {
-            var slot = bookedSlots[i];
-            var slotStart = new Date(slot.date + 'T' + slot.time);
-            var slotEnd = new Date(slotStart.getTime() + slot.duration * 60000);
+        for (let i = 0; i < bookedSlots.length; i++) {
+            const slot = bookedSlots[i];
+            const slotStart = new Date(slot.date + 'T' + slot.time);
+            const slotEnd = new Date(slotStart.getTime() + slot.duration * 60000);
 
             // Check for overlap
             if (bookingStart < slotEnd && bookingEnd > slotStart) {
@@ -330,11 +332,22 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(bookingData)
         })
         .then(function(response) {
-            // For demo, we accept any response
-            return { success: true, data: bookingData };
+            if (!response.ok) {
+                // API returned an error status, but for demo we still proceed
+                console.warn('API returned status:', response.status);
+            }
+            return response.json().catch(function() {
+                // If JSON parsing fails, return default success for demo
+                return { success: true };
+            });
         })
-        .catch(function() {
-            // For demo purposes, show success even if API fails
+        .then(function(apiResult) {
+            // Merge API result with booking data
+            return { success: apiResult.success !== false, data: bookingData };
+        })
+        .catch(function(error) {
+            // Network error or API unavailable - for demo purposes, show success
+            console.warn('Booking API unavailable (demo mode):', error.message);
             return { success: true, data: bookingData };
         })
         .then(function(result) {
