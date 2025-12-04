@@ -19,6 +19,7 @@ body {
 /* Hero Section */
 .hero {
     position: relative;
+    /* Placeholder background image path - replace with actual luxury car photo */
     background-image: url('hero-bg.jpg');
     background-size: cover;
     background-position: center;
@@ -267,11 +268,6 @@ footer p {
     letter-spacing: 0.3px;
 }
 
-/* Add padding to body to account for sticky bar on mobile */
-body {
-    padding-bottom: 70px;
-}
-
 /* Responsive Design - Mobile First */
 @media (min-width: 768px) {
     .pricing-cards {
@@ -280,10 +276,6 @@ body {
 
     .whatsapp-sticky-bar {
         display: none;
-    }
-
-    body {
-        padding-bottom: 0;
     }
 }
 
@@ -302,6 +294,10 @@ body {
 }
 
 @media (max-width: 767px) {
+    body {
+        padding-bottom: 70px;
+    }
+
     .hero {
         padding: 80px 20px;
         min-height: 100vh;
